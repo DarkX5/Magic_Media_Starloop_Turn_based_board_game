@@ -4,11 +4,12 @@
 
 namespace TurnBased.Core
 {
-    public class AIController : CharacterController
+    public class AIController : CharController
     {
-        public override bool Move()
+        public override bool Move(int diceValue)
         {
             /* TODO - implement */
+            base.Move(diceValue);
             return true;
         }
     }

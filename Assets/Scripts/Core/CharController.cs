@@ -4,14 +4,14 @@ using MEC;
 using UnityEngine;
 
 namespace TurnBased.Core {
-    public class CharacterController : MonoBehaviour
+    public class CharController : MonoBehaviour
     {
         [SerializeField] protected uint playerId = 0;
         protected float targetX = 0;
 
         private float moveUpdateInterval = 0.1f;
         
-        public virtual bool Move() { return true; }
+        // public virtual bool Move() { return true; }
         public virtual bool Move(int diceResult) { 
             targetX = (int)transform.position.x + diceResult;
             return true;
@@ -37,10 +37,24 @@ namespace TurnBased.Core {
             Timing.RunCoroutine(MoveToTargetCO());
         }
         private IEnumerator<float> MoveToTargetCO() {
+            if (targetX > transform.position.x) {
+                transform.position = new Vector3(transform.position.x + 1, transform.position.y, transform.position.z);
+                PlayMoveAnimation();
+            } else {
+                PlayIdleAnimation();
+            }
             yield return Timing.WaitForSeconds(moveUpdateInterval);
             if (targetX > transform.position.x) {
                 StartCoroutine(MoveToTargetCO());
             }
+        }
+
+        private void PlayMoveAnimation() {
+            /* TODO - implement */
+        }
+        private void PlayIdleAnimation()
+        {
+            /* TODO - implement */
         }
     }
 }
