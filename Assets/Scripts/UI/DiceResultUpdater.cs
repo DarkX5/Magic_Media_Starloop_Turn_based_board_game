@@ -19,7 +19,6 @@ public class DiceResultUpdater : MonoBehaviour
 
         // subscribe to dice rolls
         DiceController.onDiceRoll += UpdateText;
-        // DiceController.onBigDiceRoll += UpdateText;
 
         // subscribe to move state calls
         GameHandler.onMoveStateChanged += SetIsMoving;
@@ -27,7 +26,6 @@ public class DiceResultUpdater : MonoBehaviour
     private void OnDestroy() {
         // unsubscribe to dice rolls
         DiceController.onDiceRoll -= UpdateText;
-        // DiceController.onBigDiceRoll -= UpdateText;
 
         // unsubscribe to move state calls
         GameHandler.onMoveStateChanged -= SetIsMoving;

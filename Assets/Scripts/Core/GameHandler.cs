@@ -10,13 +10,18 @@ namespace TurnBased.Core
     {
         // public static event Action<int, int> onMoveCurrentPlayer = null;
         public static event Action<bool> onMoveStateChanged = null;
+        public static event Action<bool> onBigDiceButtonVisibilityCheck = null;
+        public static event Action<int> onNextTurn = null;
         public static event Action<int> onGameEnd = null;
+        [Header("Settings")]
+        [SerializeField] private int bigDiceTurnCooldown = 3;
 
         [Header("Auto-Set -> only for debug")]
         [SerializeField] private CharController[] players = null;
         [SerializeField] private int currentPlayerID = 0;
-        [SerializeField] private int currentTurn = 1;
+        [SerializeField] private int currentTurn = 0;
         [SerializeField] private bool isVictory = false;
+        [SerializeField] private int[] bigDiceTurnUse;
 
         public int CurrentPlayerID { get { return currentPlayerID; } }
         public int CurrentTurn { get { return currentTurn; } }
@@ -38,6 +43,12 @@ namespace TurnBased.Core
             {
                 Debug.LogError("No players in scene");
             }
+            // setup big dice use start data
+            bigDiceTurnUse = new int[GameData.Instance.PlayerNo];
+            for (int i = 0; i < bigDiceTurnUse.Length; i += 1)
+            {
+                bigDiceTurnUse[i] = -bigDiceTurnCooldown;
+            }
 
             // subscribe to victory checks
             VictoryPoint.onVictory += VictoryEndGame;
@@ -47,6 +58,8 @@ namespace TurnBased.Core
 
             // subscribe to dice rolls
             DiceController.onDiceRoll += MoveCurrentPlayer;
+            // subscribe to big dice rolls
+            DiceController.onBigDiceRoll += SetBigDiceRollTurn;
         }
         private void OnDestroy()
         {
@@ -58,20 +71,19 @@ namespace TurnBased.Core
 
             // unsubscribe to dice rolls
             DiceController.onDiceRoll -= MoveCurrentPlayer;
+            // unsubscribe to big dice rolls
+            DiceController.onBigDiceRoll -= SetBigDiceRollTurn;
         }
 
         private void MoveCurrentPlayer(int diceValue)
         {
-            // if game won || player moving - ignore move commands
-            if (isVictory || isPlayerMoving) return;
-
             isPlayerMoving = true;
             onMoveStateChanged?.Invoke(isPlayerMoving);
             // better to call a single method that do "PlayerNumber" ifs
             players[currentPlayerID].Move(diceValue);
-
-            // // move current player
-            // onMoveCurrentPlayer?.Invoke(currentPlayerID, diceValue);
+        }
+        private void SetBigDiceRollTurn(int diceValue) {
+            bigDiceTurnUse[currentPlayerID] = (int)(currentTurn / 2);
         }
 
         private void NextTurn(int finalMovePosition)
@@ -86,6 +98,12 @@ namespace TurnBased.Core
                 currentPlayerID = 0;
             }
             currentTurn += 1;
+
+            var gameTurn = (int)(currentTurn / 2);
+            // call big dice visibility change
+            onBigDiceButtonVisibilityCheck?.Invoke((gameTurn - bigDiceTurnUse[currentPlayerID]) > bigDiceTurnCooldown);
+            // call next turn subscribers
+            onNextTurn?.Invoke(gameTurn);
         }
         private void VictoryEndGame()
         {

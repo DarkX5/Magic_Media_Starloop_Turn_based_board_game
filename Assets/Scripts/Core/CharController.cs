@@ -13,46 +13,15 @@ namespace TurnBased.Core {
         [SerializeField] private float moveUpdateInterval = 0.1f;
         protected float targetX = 0;
 
-        
-        // public virtual bool Move() { return true; }
-        public virtual bool Move(int diceValue) { 
-            // targetX = (int)transform.position.x + diceResult;
-
-            // current player -> move char to new position
+        public virtual bool Move(int diceValue)
+        {
+            // move char to new position
             targetX = transform.position.x + diceValue;
             Timing.RunCoroutine(MoveToTargetCO());
             return true;
         }
 
-        private void Start() {
-            // // subscribe to move calls
-            // GameHandler.onMoveCurrentPlayer += MoveToTarget;
-
-            // // subscribe to victory calls
-            // VictoryPoint.onVictory += CheckEndGameAnimation;
-        }
-        private void OnDestroy() {
-            // // unsubscribe to move calls
-            // GameHandler.onMoveCurrentPlayer += MoveToTarget;
-
-            // // unsubscribe to victory calls
-            // VictoryPoint.onVictory -= CheckEndGameAnimation;
-        }
-
-        private void MoveToTarget(int currentPlayerID = -1, int diceValue = 0) {
-            // not current player turn - ignore call
-            if (currentPlayerID != playerId) { return; }
-
-            // current player -> move char to new position
-            targetX = transform.position.x + diceValue;
-            Timing.RunCoroutine(MoveToTargetCO());
-        }
-        // private void MoveToTarget(int diceValue = 0)
-        // {
-        //     // current player -> move char to new position
-        //     targetX = transform.position.x + diceValue;
-        //     Timing.RunCoroutine(MoveToTargetCO());
-        // }
+        // move char over time
         private IEnumerator<float> MoveToTargetCO() {
             if (targetX > transform.position.x) {
                 transform.position = new Vector3(transform.position.x + moveStep, transform.position.y, transform.position.z);

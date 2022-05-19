@@ -991,7 +991,6 @@ MonoBehaviour:
   bigDiceRange:
     min: 5
     max: 10
-  bigDiceTurnCooldown: 3
 --- !u!4 &993060205
 Transform:
   m_ObjectHideFlags: 0
@@ -1735,6 +1734,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1591152316}
+  - component: {fileID: 1591152320}
   - component: {fileID: 1591152319}
   - component: {fileID: 1591152318}
   - component: {fileID: 1591152317}
@@ -1859,6 +1859,18 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1591152315}
   m_CullTransparentMesh: 1
+--- !u!114 &1591152320
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1591152315}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7eafdc15b228b254192903a998908776, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1593655799
 GameObject:
   m_ObjectHideFlags: 0
@@ -1888,12 +1900,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 48b24c19f4397db40baca599002cb916, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  bigDiceTurnCooldown: 3
   players:
   - {fileID: 2070793776}
   - {fileID: 1848253471}
   currentPlayerID: 0
   currentTurn: 1
   isVictory: 0
+  bigDiceTurnUse: 
 --- !u!4 &1593655801
 Transform:
   m_ObjectHideFlags: 0
@@ -1917,6 +1931,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1611252001}
+  - component: {fileID: 1611252002}
   - component: {fileID: 1611252000}
   - component: {fileID: 1611251999}
   - component: {fileID: 1611251998}
@@ -2009,6 +2024,19 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
+--- !u!114 &1611252002
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1611251997}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e892436df53f9b49b71d9dfd10bbfa3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  buttonsCanvas: {fileID: 0}
 --- !u!1 &1617146369
 GameObject:
   m_ObjectHideFlags: 0
@@ -2698,7 +2726,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ef1ec85a7789c90479e2062cddd87d2d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerNoText: {fileID: 0}
+  playerNoText: {fileID: 1427045123}
   victoryCanvas: {fileID: 0}
 --- !u!1 &2106702545
 GameObject:
