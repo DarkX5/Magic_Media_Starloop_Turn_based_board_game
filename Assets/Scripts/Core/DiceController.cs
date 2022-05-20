@@ -11,6 +11,17 @@ public class DiceController : MonoBehaviour
     [SerializeField] private DiceRange normalDiceRange = new DiceRange(1, 6);
     [SerializeField] private DiceRange bigDiceRange = new DiceRange(5, 10);
     private int currentTurn = 0;
+    private bool bigDiceEnabled = true;
+
+    private void Start() {
+        AIController.onAIDiceRoll += RollAIDice;
+        GameHandler.onBigDiceButtonVisibilityCheck += BlockBigDice;
+    }
+
+    private void OnDestroy() {
+        AIController.onAIDiceRoll -= RollAIDice;
+        GameHandler.onBigDiceButtonVisibilityCheck -= BlockBigDice;
+    }
 
     // called from UI
     public void RollDiceUI() {
@@ -22,5 +33,17 @@ public class DiceController : MonoBehaviour
         int resultValue = UnityEngine.Random.Range(bigDiceRange.min, bigDiceRange.max + 1);
         onDiceRoll?.Invoke(resultValue);
         onBigDiceRoll?.Invoke(resultValue);
+    }
+
+    private void BlockBigDice(bool isBigDiceEnabled) {
+        bigDiceEnabled = isBigDiceEnabled;
+    }
+    private void RollAIDice()
+    {
+        if (bigDiceEnabled) {
+            RollBigDiceUI();
+        } else {
+            RollDiceUI();
+        }
     }
 }

@@ -2,16 +2,23 @@
 // using System.Collections.Generic;
 // using UnityEngine;
 
+using System;
+
 namespace TurnBased.Core
 {
     public class AIController : CharController
     {
-        /* TODO - put AI Logic here */
-        // public override bool Move(int diceValue)
-        // {
-        //     /* TODO - implement */
-        //     base.Move(diceValue);
-        //     return true;
-        // }
+        public static event Action onAIDiceRoll = null;
+        private void Start() {
+            GameHandler.onNextTurn += AIMove;   
+        }
+        private void OnDestroy() {
+            GameHandler.onNextTurn -= AIMove;
+        }
+
+        private void AIMove(int turnNo, bool isHuman) {
+            if (!isHuman)
+                onAIDiceRoll?.Invoke();
+        }
     }
 }

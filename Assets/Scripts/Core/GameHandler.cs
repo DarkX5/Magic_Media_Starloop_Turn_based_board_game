@@ -11,13 +11,15 @@ namespace TurnBased.Core
         // public static event Action<int, int> onMoveCurrentPlayer = null;
         public static event Action<bool> onMoveStateChanged = null;
         public static event Action<bool> onBigDiceButtonVisibilityCheck = null;
-        public static event Action<int> onNextTurn = null;
+        public static event Action<int, bool> onNextTurn = null;
         public static event Action<int> onGameEnd = null;
         [Header("Settings")]
         [SerializeField] private int bigDiceTurnCooldown = 3;
 
         [Header("Auto-Set -> only for debug")]
         [SerializeField] private CharController[] players = null;
+        // set player types Human / AI (true / false)
+        [SerializeField] private bool[] playerTypes = null;
         [SerializeField] private int currentPlayerID = 0;
         [SerializeField] private int currentTurn = 0;
         [SerializeField] private bool isVictory = false;
@@ -32,7 +34,8 @@ namespace TurnBased.Core
 
         private void Start()
         {
-            maxPlayerId = GameData.Instance.PlayerNo - 1;
+            var pNo = GameData.Instance.PlayerNo;
+            maxPlayerId = pNo - 1;
 
             // check why it doesn't find items
             if (players == null)
@@ -43,11 +46,14 @@ namespace TurnBased.Core
             {
                 Debug.LogError("No players in scene");
             }
-            // setup big dice use start data
-            bigDiceTurnUse = new int[GameData.Instance.PlayerNo];
+            // setup big dice & player types start data
+            bigDiceTurnUse = new int[pNo];
+            playerTypes = new bool[pNo];
             for (int i = 0; i < bigDiceTurnUse.Length; i += 1)
             {
                 bigDiceTurnUse[i] = -bigDiceTurnCooldown;
+                playerTypes[i] = players[i].GetType() == typeof(PlayerController) ? true : false;
+                Debug.Log($"i: {i} |  type: {players[i].GetType()} | typeAI: {typeof(PlayerController)} | isHuman: {playerTypes[i]}");
             }
 
             // subscribe to victory checks
@@ -102,8 +108,9 @@ namespace TurnBased.Core
             var gameTurn = (int)(currentTurn / 2);
             // call big dice visibility change
             onBigDiceButtonVisibilityCheck?.Invoke((gameTurn - bigDiceTurnUse[currentPlayerID]) > bigDiceTurnCooldown);
+            
             // call next turn subscribers
-            onNextTurn?.Invoke(gameTurn);
+            onNextTurn?.Invoke(gameTurn, playerTypes[currentPlayerID]);
         }
         private void VictoryEndGame()
         {

@@ -33,9 +33,12 @@ public class GameButtonsCanvasUpdater : MonoBehaviour
         GameHandler.onMoveStateChanged -= DisableCanvas;
     }
 
-    private void EnableCanvas(int turnNo)
+    private void EnableCanvas(int turnNo, bool isHuman)
     {
-        buttonsCanvas.enabled = true;
+        if (isHuman)
+            buttonsCanvas.enabled = true;
+        else
+            buttonsCanvas.enabled = false;
     }
     private void DisableCanvas(bool isMovingState)
     {
