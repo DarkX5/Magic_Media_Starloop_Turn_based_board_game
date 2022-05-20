@@ -6,11 +6,9 @@ namespace TurnBased.Core
 {
     public class PlayerController : CharController
     {
-        // public override bool Move(int diceValue)
-        // {
-        //     /* TODO - implement */
-        //     base.Move(diceValue);
-        //     return true;
-        // }
+        private void Start()
+        {
+            base.Init();
+        }
     }
 }

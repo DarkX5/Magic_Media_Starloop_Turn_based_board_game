@@ -10,7 +10,6 @@ public class DiceController : MonoBehaviour
     public static event Action<int> onBigDiceRoll = null;
     [SerializeField] private DiceRange normalDiceRange = new DiceRange(1, 6);
     [SerializeField] private DiceRange bigDiceRange = new DiceRange(5, 10);
-    private int currentTurn = 0;
     private bool bigDiceEnabled = true;
 
     private void Start() {

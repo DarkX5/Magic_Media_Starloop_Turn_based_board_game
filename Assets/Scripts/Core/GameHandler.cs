@@ -53,7 +53,7 @@ namespace TurnBased.Core
             {
                 bigDiceTurnUse[i] = -bigDiceTurnCooldown;
                 playerTypes[i] = players[i].GetType() == typeof(PlayerController) ? true : false;
-                Debug.Log($"i: {i} |  type: {players[i].GetType()} | typeAI: {typeof(PlayerController)} | isHuman: {playerTypes[i]}");
+                // Debug.Log($"i: {i} |  type: {players[i].GetType()} | typeAI: {typeof(PlayerController)} | isHuman: {playerTypes[i]}");
             }
 
             // subscribe to victory checks
@@ -108,7 +108,7 @@ namespace TurnBased.Core
             var gameTurn = (int)(currentTurn / 2);
             // call big dice visibility change
             onBigDiceButtonVisibilityCheck?.Invoke((gameTurn - bigDiceTurnUse[currentPlayerID]) > bigDiceTurnCooldown);
-            
+
             // call next turn subscribers
             onNextTurn?.Invoke(gameTurn, playerTypes[currentPlayerID]);
         }

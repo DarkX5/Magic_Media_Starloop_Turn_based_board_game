@@ -10,6 +10,7 @@ namespace TurnBased.Core
     {
         public static event Action onAIDiceRoll = null;
         private void Start() {
+            base.Init();
             GameHandler.onNextTurn += AIMove;   
         }
         private void OnDestroy() {

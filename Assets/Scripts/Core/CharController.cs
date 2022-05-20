@@ -11,7 +11,19 @@ namespace TurnBased.Core {
         [SerializeField] protected uint playerId = 0;
         [SerializeField] protected float moveStep = 0.1f;
         [SerializeField] private float moveUpdateInterval = 0.1f;
+        [Header("Auto-Set - visible 4 debugging")]
+        [SerializeField] protected CharacterAnimationControl animationControl = null;
         protected float targetX = 0;
+
+        protected virtual void Init() {
+            if (animationControl == null)
+                animationControl = GetComponent<CharacterAnimationControl>();
+
+            GameHandler.onGameEnd += CheckEndGameAnimation;
+        }
+        private void OnDestroy() {
+            GameHandler.onGameEnd -= CheckEndGameAnimation;
+        }
 
         public virtual bool Move(int diceValue)
         {
@@ -38,28 +50,33 @@ namespace TurnBased.Core {
             }
         }
 
-        private void PlayMoveAnimation() {
-            /* TODO - implement */
-            // Debug.Log($"Move {playerId}");
-        }
-        private void PlayIdleAnimation()
-        {
-            /* TODO - implement */
-            Debug.Log($"Idle {playerId}");
-        }
-        private void CheckEndGameAnimation(int currentPlayerID = -1) {
-            if (currentPlayerID == playerId)
+        private void CheckEndGameAnimation(int winningPlayerID = -1) {
+            if (winningPlayerID == playerId)
                 PlayVictoryAnimation();
             else
                 PlayDefeatAnimation();
         }
+        private void PlayMoveAnimation()
+        {
+            /* TODO - implement */
+            animationControl?.EnableRunAnimation();
+            Debug.Log($"Move - {playerId}");
+        }
+        private void PlayIdleAnimation()
+        {
+            /* TODO - implement */
+            animationControl?.EnableIdleAnimation();
+            Debug.Log($"Idle {playerId}");
+        }
         private void PlayVictoryAnimation() {
             /* TODO - implement */
+            animationControl?.EnableVictoryAnimation();
             Debug.Log($"Victory {playerId}");
         }
         private void PlayDefeatAnimation()
         {
             /* TODO - implement */
+            animationControl?.EnableDefeatAnimation();
             Debug.Log($"Defeat {playerId}");
         }
     }
