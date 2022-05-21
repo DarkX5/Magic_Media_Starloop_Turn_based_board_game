@@ -8,12 +8,14 @@ namespace TurnBased.Core {
     public class CharController : MonoBehaviour
     {
         public static event Action<int> onMoveDone = null;
-        [SerializeField] protected uint playerId = 0;
+        [SerializeField] protected int playerId = 0;
         [SerializeField] protected float moveStep = 0.1f;
         [SerializeField] private float moveUpdateInterval = 0.1f;
         [Header("Auto-Set - visible 4 debugging")]
         [SerializeField] protected CharacterAnimationControl animationControl = null;
         protected float targetX = 0;
+
+        public int PlayerID { get { return playerId; } }
 
         protected virtual void Init() {
             if (animationControl == null)
@@ -43,7 +45,7 @@ namespace TurnBased.Core {
             yield return Timing.WaitForSeconds(moveUpdateInterval);
 
             if (targetX > transform.position.x) {
-                StartCoroutine(MoveToTargetCO());
+                Timing.RunCoroutine(MoveToTargetCO());
             } else {
                 PlayIdleAnimation();
                 onMoveDone?.Invoke((int)transform.position.x);
@@ -58,26 +60,18 @@ namespace TurnBased.Core {
         }
         private void PlayMoveAnimation()
         {
-            /* TODO - implement */
             animationControl?.EnableRunAnimation();
-            Debug.Log($"Move - {playerId}");
         }
         private void PlayIdleAnimation()
         {
-            /* TODO - implement */
             animationControl?.EnableIdleAnimation();
-            Debug.Log($"Idle {playerId}");
         }
         private void PlayVictoryAnimation() {
-            /* TODO - implement */
             animationControl?.EnableVictoryAnimation();
-            Debug.Log($"Victory {playerId}");
         }
         private void PlayDefeatAnimation()
         {
-            /* TODO - implement */
             animationControl?.EnableDefeatAnimation();
-            Debug.Log($"Defeat {playerId}");
         }
     }
 }

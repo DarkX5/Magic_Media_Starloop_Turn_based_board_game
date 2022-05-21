@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using MEC;
 using UnityEngine;
 
 
@@ -12,8 +13,10 @@ namespace TurnBased.Core
         public static event Action<bool> onMoveStateChanged = null;
         public static event Action<bool> onBigDiceButtonVisibilityCheck = null;
         public static event Action<int, bool> onNextTurn = null;
+        public static event Action<int> onNextTurnCameraUpdate = null;
         public static event Action<int> onGameEnd = null;
         [Header("Settings")]
+        [SerializeField] private float secondDelayAtEndOfTurn = 1f;
         [SerializeField] private int bigDiceTurnCooldown = 3;
 
         [Header("Auto-Set -> only for debug")]
@@ -105,12 +108,21 @@ namespace TurnBased.Core
             }
             currentTurn += 1;
 
-            var gameTurn = (int)(currentTurn / 2);
+            Timing.RunCoroutine(CallSubscribersCO());
+        }
+        private IEnumerator<float> CallSubscribersCO() {
+            yield return Timing.WaitForSeconds(secondDelayAtEndOfTurn);
+
+            int gameTurn = (int)(currentTurn / 2);
+
             // call big dice visibility change
             onBigDiceButtonVisibilityCheck?.Invoke((gameTurn - bigDiceTurnUse[currentPlayerID]) > bigDiceTurnCooldown);
 
             // call next turn subscribers
             onNextTurn?.Invoke(gameTurn, playerTypes[currentPlayerID]);
+
+            // call camera subscribers
+            onNextTurnCameraUpdate?.Invoke(currentPlayerID);
         }
         private void VictoryEndGame()
         {

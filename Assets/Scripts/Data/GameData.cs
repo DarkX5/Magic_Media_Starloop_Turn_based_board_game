@@ -2,8 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace TurnBased.Core
-{
+// namespace TurnBased.Core
+// {
     public class GameData : MonoBehaviour
     {
         public static GameData Instance { get; private set; }
@@ -20,4 +20,4 @@ namespace TurnBased.Core
                 Destroy(gameObject);
         }
     }
-}
+// }
