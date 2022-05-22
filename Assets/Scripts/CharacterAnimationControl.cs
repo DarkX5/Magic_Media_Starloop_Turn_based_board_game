@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class CharacterAnimationControl : MonoBehaviour
@@ -30,6 +28,7 @@ public class CharacterAnimationControl : MonoBehaviour
 
     public void EnableIdleAnimation() {
         runValue = defeatValue = victoryValue = -1;
+        if (!animator) return;
         // set other tree vars to "disabled" values
         animator.SetFloat(runAnimationBlendTreeVar, runValue);
         animator.SetFloat(defeatAnimationBlendTreeVar, defeatValue);
@@ -38,6 +37,7 @@ public class CharacterAnimationControl : MonoBehaviour
     }
     public void EnableRunAnimation()
     {
+        if (!animator) return;
         if (runValue < 0) {
             defeatValue = victoryValue = -1;
             runValue = UnityEngine.Random.Range(0, 5);
@@ -52,6 +52,7 @@ public class CharacterAnimationControl : MonoBehaviour
         if (defeatValue < 0) {
             runValue = victoryValue = -1;
             defeatValue = UnityEngine.Random.Range(0, 5);
+            if (!animator) return;
             // set other tree vars to "disabled" values
             animator.SetFloat(runAnimationBlendTreeVar, runValue);
             animator.SetFloat(victoryAnimationBlendTreeVar, victoryValue);
@@ -60,7 +61,8 @@ public class CharacterAnimationControl : MonoBehaviour
     }
     public void EnableVictoryAnimation()
     {
-        if (animator.GetFloat(victoryAnimationBlendTreeVar) < 0) {
+        if (!animator) return;
+        if (animator?.GetFloat(victoryAnimationBlendTreeVar) < 0) {
             runValue = defeatValue = -1;
             victoryValue = UnityEngine.Random.Range(0, 5);
             // set other tree vars to "disabled" values
@@ -73,6 +75,7 @@ public class CharacterAnimationControl : MonoBehaviour
     private void ResetAnimations() {
         // set tree vars to "disabled" values
         runValue = defeatValue = victoryValue = -1;
+        if (!animator) return;
         animator.SetFloat(runAnimationBlendTreeVar, runValue);
         animator.SetFloat(defeatAnimationBlendTreeVar, defeatValue);
         animator.SetFloat(victoryAnimationBlendTreeVar, victoryValue);

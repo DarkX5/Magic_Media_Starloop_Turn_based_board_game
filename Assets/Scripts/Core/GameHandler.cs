@@ -1,5 +1,4 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using MEC;
 using UnityEngine;
@@ -9,7 +8,6 @@ namespace TurnBased.Core
 {
     public class GameHandler : MonoBehaviour
     {
-        // public static event Action<int, int> onMoveCurrentPlayer = null;
         public static event Action<bool> onMoveStateChanged = null;
         public static event Action<bool> onBigDiceButtonVisibilityCheck = null;
         public static event Action<int, bool> onNextTurn = null;
@@ -87,6 +85,8 @@ namespace TurnBased.Core
 
         private void MoveCurrentPlayer(int diceValue)
         {
+            // stop movement if game ended
+            if (isGameEnded) return;
             isPlayerMoving = true;
             onMoveStateChanged?.Invoke(isPlayerMoving);
             // better to call a single method that do "PlayerNumber" ifs
@@ -109,7 +109,7 @@ namespace TurnBased.Core
             }
             currentTurn += 1;
 
-            Timing.RunCoroutine(CallSubscribersCO());
+            Timing.RunCoroutine(CallSubscribersCO().CancelWith(gameObject));
         }
         private IEnumerator<float> CallSubscribersCO() {
             yield return Timing.WaitForSeconds(secondDelayAtEndOfTurn);

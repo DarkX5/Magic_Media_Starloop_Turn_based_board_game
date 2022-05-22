@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using TurnBased.Audio;
 using UnityEngine;
 
@@ -7,6 +5,10 @@ public class CharacterAudioEvents : MonoBehaviour
 {
     [Header("Auto-Set - visible 4 debug")]
     [SerializeField] private AudioSource audioSource = null;
+
+    private float normalVolume = 1f;
+    private float muteVolume = 0f;
+    
     private void Start() {
         if (audioSource == null) {
             audioSource = GetComponent<AudioSource>();
@@ -17,8 +19,21 @@ public class CharacterAudioEvents : MonoBehaviour
 
         audioSource.playOnAwake = true;
         audioSource.loop = false;
-        audioSource.volume = 1f;
+        audioSource.volume = normalVolume;
         audioSource.enabled = false;
+
+        AudioTogglerEvent.onSoundToggle += ToggleSound;
+    }
+    private void OnDestroy() {
+        AudioTogglerEvent.onSoundToggle -= ToggleSound;
+    }
+
+    private void ToggleSound(bool isSoundOn)
+    {
+        if (isSoundOn)
+            audioSource.volume = normalVolume;
+        else
+            audioSource.volume = muteVolume;
     }
     public void PlayFootstep() {
         if (AudioController.Instance == null) {

@@ -1,5 +1,4 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using MEC;
 using UnityEngine;
@@ -31,7 +30,7 @@ namespace TurnBased.Core {
         {
             // move char to new position
             targetX = transform.position.x + diceValue;
-            Timing.RunCoroutine(MoveToTargetCO());
+            Timing.RunCoroutine(MoveToTargetCO().CancelWith(gameObject));
             return true;
         }
 
@@ -45,7 +44,7 @@ namespace TurnBased.Core {
             yield return Timing.WaitForSeconds(moveUpdateInterval);
 
             if (targetX > transform.position.x) {
-                Timing.RunCoroutine(MoveToTargetCO());
+                Timing.RunCoroutine(MoveToTargetCO().CancelWith(gameObject));
             } else {
                 PlayIdleAnimation();
                 onMoveDone?.Invoke(playerId, (int)transform.position.x);

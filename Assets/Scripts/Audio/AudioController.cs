@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using TurnBased.Core;
 using UnityEngine;
 
@@ -16,6 +14,9 @@ namespace TurnBased.Audio
 
         [Header("Auto-Set - visible 4 debug")]
         [SerializeField] private AudioSource audioSource = null;
+
+        private float normalVolume = 0.25f;
+        private float muteVolume = 0f;
 
         private void Awake() {
             if (Instance == null)
@@ -37,7 +38,7 @@ namespace TurnBased.Audio
             // setup audio source
             audioSource.playOnAwake = true;
             audioSource.loop = true;
-            audioSource.volume = 0.75f;
+            audioSource.volume = normalVolume;
             audioSource.enabled = false;
 
             // start a random gameplay music clip
@@ -46,10 +47,19 @@ namespace TurnBased.Audio
             
             GameHandler.onPlayerVictory += PlayVictoryClip;
             GameHandler.onPlayerDefeat += PlayDefeatClip;
+            AudioTogglerEvent.onSoundToggle += ToggleSound;
         }
         private void OnDestroy() {
+            AudioTogglerEvent.onSoundToggle -= ToggleSound;
             GameHandler.onPlayerVictory -= PlayVictoryClip;
             GameHandler.onPlayerDefeat -= PlayDefeatClip;
+        }
+
+        private void ToggleSound(bool isSoundOn) {
+            if(isSoundOn)
+                audioSource.volume = normalVolume;
+            else
+                audioSource.volume = muteVolume;
         }
 
         private void PlayVictoryClip() {

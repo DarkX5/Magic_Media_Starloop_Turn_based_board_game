@@ -1,8 +1,5 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using TurnBased.Core;
-// using TurnBased.Core;
 using UnityEngine;
 
 public class EnvironmentGenerator : MonoBehaviour
@@ -22,13 +19,14 @@ public class EnvironmentGenerator : MonoBehaviour
         float newPosZ;
         GameObject newTile = null;
         for (int i = 0; i < tileMaxPlacement; i += (int)tileSize) {
-            // generate tiles underneath the players
+            // generate player-walkable tiles
             for (int j = 0; j < playerNo; j += 1) {
                 newTile = Instantiate(floorTiles[UnityEngine.Random.Range(0, floorTiles.Length)], transform);
                 // calculate tile Z position -> the doubling is required to leave space for separator placements
                 newPosZ = tileSize * j; // * 2;
                 newTile.transform.position = new Vector3(i, 0f, newPosZ);
             }
+
             // // generate separator tiles
             // for (int j = 1; j < playerNo; j += 1)
             // {
