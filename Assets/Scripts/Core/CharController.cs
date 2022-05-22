@@ -51,8 +51,7 @@ namespace TurnBased.Core {
                 onMoveDone?.Invoke(playerId, (int)transform.position.x);
             }
         }
-
-        private void CheckEndGameAnimation(int winningPlayerID = -1) {
+        protected virtual void CheckEndGameAnimation(int winningPlayerID = -1) {
             if (winningPlayerID == playerId)
                 PlayVictoryAnimation();
             else

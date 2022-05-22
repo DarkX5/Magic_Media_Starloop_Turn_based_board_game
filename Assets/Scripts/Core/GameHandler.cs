@@ -15,6 +15,8 @@ namespace TurnBased.Core
         public static event Action<int, bool> onNextTurn = null;
         public static event Action<int> onNextTurnCameraUpdate = null;
         public static event Action<int> onGameEnd = null;
+        public static event Action onPlayerVictory = null;
+        public static event Action onPlayerDefeat = null;
         [Header("Settings")]
         [SerializeField] private float secondDelayAtEndOfTurn = 1f;
         [SerializeField] private int bigDiceTurnCooldown = 3;
@@ -25,12 +27,12 @@ namespace TurnBased.Core
         [SerializeField] private bool[] playerTypes = null;
         [SerializeField] private int currentPlayerID = 0;
         [SerializeField] private int currentTurn = 0;
-        [SerializeField] private bool isVictory = false;
+        [SerializeField] private bool isGameEnded = false;
         [SerializeField] private int[] bigDiceTurnUse;
 
         public int CurrentPlayerID { get { return currentPlayerID; } }
         public int CurrentTurn { get { return currentTurn; } }
-        public bool IsVictory { get { return isVictory; } }
+        public bool IsVictory { get { return isGameEnded; } }
 
         private int maxPlayerId = -1;
         private bool isPlayerMoving = false;
@@ -56,7 +58,6 @@ namespace TurnBased.Core
             {
                 bigDiceTurnUse[i] = -bigDiceTurnCooldown;
                 playerTypes[i] = players[i].GetType() == typeof(PlayerController) ? true : false;
-                // Debug.Log($"i: {i} |  type: {players[i].GetType()} | typeAI: {typeof(PlayerController)} | isHuman: {playerTypes[i]}");
             }
 
             // subscribe to victory checks
@@ -97,7 +98,7 @@ namespace TurnBased.Core
 
         private void NextTurn(int movingPlayerID, int finalMovePosition)
         {
-            if (isVictory) { return; }
+            if (isGameEnded) { return; }
 
             isPlayerMoving = false;
             onMoveStateChanged?.Invoke(isPlayerMoving);
@@ -126,9 +127,16 @@ namespace TurnBased.Core
         }
         private void VictoryEndGame()
         {
-            Debug.Log("victory check - player " + currentPlayerID);
-            isVictory = true;
+            isGameEnded = true;
             onGameEnd?.Invoke(currentPlayerID);
+
+            if (playerTypes[currentPlayerID] == true) {
+                // if player type == true (player type == Player Controller) call victory subscribers
+                onPlayerVictory?.Invoke();
+            } else {
+                // if player type == false (player type != Player Controller) call defeat subscribers
+                onPlayerDefeat?.Invoke();
+            }
         }
     }
 }

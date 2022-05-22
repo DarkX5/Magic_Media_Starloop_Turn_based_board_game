@@ -21,5 +21,9 @@ namespace TurnBased.Core
             if (!isHuman)
                 onAIDiceRoll?.Invoke();
         }
+        protected override void CheckEndGameAnimation(int winningPlayerID = -1)
+        {
+            base.CheckEndGameAnimation(winningPlayerID);
+        }
     }
 }

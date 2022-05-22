@@ -10,5 +10,9 @@ namespace TurnBased.Core
         {
             base.Init();
         }
+        protected override void CheckEndGameAnimation(int winningPlayerID = -1)
+        {
+            base.CheckEndGameAnimation(winningPlayerID);
+        }
     }
 }

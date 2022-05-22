@@ -18,7 +18,7 @@ public class VictoryCanvasUpdater : MonoBehaviour
         if (playerNoText == null) {
             var texts = GetComponentsInChildren<TMP_Text>();
             playerNoText = texts[texts.Length - 1];
-            Debug.LogWarning("Player No Text SHOULD be assigned! it has been assigne automatically as the last TMP_Text in children - may lead to errors");
+            Debug.LogWarning("'Player No Text' SHOULD be assigned! it has been assigne automatically as the last TMP_Text in children - may lead to errors");
         }
 
         // get victory canvas
