@@ -40,15 +40,23 @@ namespace TurnBased.Core
             var pNo = GameData.Instance.PlayerNo;
             maxPlayerId = pNo - 1;
 
-            // check why it doesn't find items
-            if (players == null)
-            {
-                players = GameObject.FindObjectsOfType<CharController>();
-            }
+            // // check why it doesn't find items
+            // if (players == null)
+            // {
+                /* TODO - find way to get players */
+            //     players = GameObject.FindObjectsOfType<CharController>();
+            // }
             if (players == null || players.Length < 1)
             {
                 Debug.LogError("No players in scene");
+            } else {
+                for (int i = 0; i < players.Length; i += 1) {
+                    if (players[i] == null) {
+                        Debug.LogError("Player list invalid!");
+                    }
+                }
             }
+            
             // setup big dice & player types start data
             bigDiceTurnUse = new int[pNo];
             playerTypes = new bool[pNo];

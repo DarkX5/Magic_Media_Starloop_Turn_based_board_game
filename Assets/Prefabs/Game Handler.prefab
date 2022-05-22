@@ -45,9 +45,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   secondDelayAtEndOfTurn: 1
   bigDiceTurnCooldown: 3
-  players:
-  - {fileID: 0}
-  - {fileID: 0}
+  players: []
   playerTypes: 
   currentPlayerID: 0
   currentTurn: 1
