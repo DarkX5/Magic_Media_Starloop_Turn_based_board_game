@@ -30,7 +30,7 @@ public class DiceResultUpdater : MonoBehaviour
     }
     
     private void UpdateText(int diceResult) {
-        if (isMoving) return;
+        if (!diceResultText) return;
         diceResultText.text = diceResult.ToString();
     }
     private void SetIsMoving(bool newValue) {
