@@ -7,7 +7,7 @@ using UnityEngine;
 namespace TurnBased.Core {
     public class CharController : MonoBehaviour
     {
-        public static event Action<int> onMoveDone = null;
+        public static event Action<int, int> onMoveDone = null;
         [SerializeField] protected int playerId = 0;
         [SerializeField] protected float moveStep = 0.1f;
         [SerializeField] private float moveUpdateInterval = 0.1f;
@@ -48,7 +48,7 @@ namespace TurnBased.Core {
                 Timing.RunCoroutine(MoveToTargetCO());
             } else {
                 PlayIdleAnimation();
-                onMoveDone?.Invoke((int)transform.position.x);
+                onMoveDone?.Invoke(playerId, (int)transform.position.x);
             }
         }
 

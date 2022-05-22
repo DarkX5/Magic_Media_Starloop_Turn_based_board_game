@@ -26,16 +26,16 @@ public class EnvironmentGenerator : MonoBehaviour
             for (int j = 0; j < playerNo; j += 1) {
                 newTile = Instantiate(floorTiles[UnityEngine.Random.Range(0, floorTiles.Length)], transform);
                 // calculate tile Z position -> the doubling is required to leave space for separator placements
-                newPosZ = tileSize * j * 2;
+                newPosZ = tileSize * j; // * 2;
                 newTile.transform.position = new Vector3(i, 0f, newPosZ);
             }
-            // generate separator tiles
-            for (int j = 1; j < playerNo; j += 1)
-            {
-                newTile = Instantiate(separatorTiles[UnityEngine.Random.Range(0, separatorTiles.Length)], transform);
-                newPosZ = tileSize * j;
-                newTile.transform.position = new Vector3(i, 0f, newPosZ);
-            }
+            // // generate separator tiles
+            // for (int j = 1; j < playerNo; j += 1)
+            // {
+            //     newTile = Instantiate(separatorTiles[UnityEngine.Random.Range(0, separatorTiles.Length)], transform);
+            //     newPosZ = tileSize * j;
+            //     newTile.transform.position = new Vector3(i, 0f, newPosZ);
+            // }
         }
         onEnvironmentGenerated?.Invoke();
     }

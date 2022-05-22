@@ -24,7 +24,7 @@ namespace TurnBased.Core
             CharController.onMoveDone -= CheckVictory;
         }
 
-        private void CheckVictory(int finalMovePosition) {
+        private void CheckVictory(int playerID, int finalMovePosition) {
             if (finalMovePosition >= (int)victoryPoint.x) {
                 Victory();
             }

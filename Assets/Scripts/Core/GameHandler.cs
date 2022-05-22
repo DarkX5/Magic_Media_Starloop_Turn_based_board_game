@@ -95,7 +95,7 @@ namespace TurnBased.Core
             bigDiceTurnUse[currentPlayerID] = (int)(currentTurn / 2);
         }
 
-        private void NextTurn(int finalMovePosition)
+        private void NextTurn(int movingPlayerID, int finalMovePosition)
         {
             if (isVictory) { return; }
 
