@@ -43,5 +43,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d29618540fe86a64cbc6884eaa30d4dc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  pveSceneName: PvE
-  pvpSceneName: PvP
+  pveSceneName: PvE Scene
+  pvpSceneName: PvP Scene
